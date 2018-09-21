@@ -16,7 +16,8 @@ export class AppComponent {
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
   constructor(public route: Router) {
-    this.navigateTo(1, 'charts', 'View Charts');
+    // this.navigateTo(1, 'charts', 'View Charts');
+    this.navigateTo(2, 'statistics', 'Statistics');
   }
 
   /** custom trigger can be TemplateRef **/

@@ -27,7 +27,7 @@ export class ViewChartsComponent implements OnInit {
       for (let index = 0; index < data[0]['date'].length; index++) {
         // tslint:disable-next-line:max-line-length
         newData.push([new Date(data[0]['date'][index]).getTime(), data[1]['open'][index], data[2]['high'][index], data[3]['low'][index], data[4]['close'][index]]);
-        volumeData.push([data[0]['date'][index], data[5]['volume'][index]]);
+        volumeData.push([new Date(data[0]['date'][index]).getTime(), data[5]['volume'][index]]);
       }
       this.setGraphData(newData, volumeData, data[0]['date'].length);
     }, (err) => {

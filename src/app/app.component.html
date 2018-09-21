@@ -3,15 +3,30 @@
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item [nzSelected]="itemSelected === 1" (click)="navigateTo(1, 'charts', 'View Charts')"><span><i class="anticon anticon-area-chart"></i><span class="nav-text">View Charts</span></span></li>
-      <li nz-menu-item [nzSelected]="itemSelected === 2" (click)="navigateTo(2, 'statistics', 'Statistics')"><span><i class="anticon anticon-dashboard"></i><span class="nav-text">Statistics</span></span></li>
-      <li nz-menu-item [nzSelected]="itemSelected === 3" (click)="navigateTo(3, 'upload', 'Upload CSV')"><span><i class="anticon anticon-cloud-upload-o"></i><span class="nav-text">Upload CSV</span></span></li>
+      <!-- <li nz-menu-item [nzSelected]="itemSelected === 1" (click)="navigateTo(1, 'charts', 'View Charts')"><span><i class="anticon anticon-area-chart"></i><span class="nav-text">View Charts</span></span></li> -->
+      <li nz-menu-item [nzSelected]="itemSelected === 2" (click)="navigateTo(2, 'statistics', 'Statistics')">
+        <span>
+          <i class="anticon anticon-dashboard"></i>
+          <span class="nav-text">Statistics</span>
+        </span>
+      </li>
+      <li nz-menu-item [nzSelected]="itemSelected === 3" (click)="navigateTo(3, 'upload', 'Upload CSV')">
+        <span>
+          <i class="anticon anticon-cloud-upload-o"></i>
+          <span class="nav-text">Upload CSV</span>
+        </span>
+      </li>
     </ul>
   </nz-sider>
   <nz-layout>
     <nz-header style="background: #fff; padding:0;">
-      <i style="float: left;" class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
+      <i style="float: left;" class="anticon trigger" [class.anticon-menu-fold]="!isCollapsed" [class.anticon-menu-unfold]="isCollapsed"
+        (click)="isCollapsed=!isCollapsed"></i>
       <h2 style="float: left; margin-bottom: 0">Pattern Recognition</h2>
+      <div class="usermenu">
+        <!-- <nz-avatar nzIcon="anticon anticon-user" nzSrc="https://qph.fs.quoracdn.net/main-thumb-200537039-200-yzzdxnjrgyziepvulsexsojmhgbqdkkb.jpeg"></nz-avatar> -->
+        <nz-avatar nzText="M" style="color:#ffffff; background-color:#1FA47A;"></nz-avatar>&nbsp;&nbsp;<b>Username</b>
+      </div>
     </nz-header>
     <nz-content style="margin:0 16px;">
       <nz-breadcrumb style="margin:16px 0;">
