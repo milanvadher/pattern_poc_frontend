@@ -10,10 +10,13 @@ import { RestapiService } from '../restapi.service';
 export class StatisticsComponent implements OnInit {
 
   stock: StockChart;
-  // price: Chart;
   price: StockChart;
+  triangle: StockChart;
+  zigzag: StockChart;
+
   groupingUnits = [['week', [1]], ['month', [1, 2, 3, 4, 6]]];
   trianglePattern = [];
+  zigzagPattern = [];
   priceData = [];
   stockData = [];
   volumeData = [];
@@ -34,22 +37,34 @@ export class StatisticsComponent implements OnInit {
         this.stockData.push([new Date(data[0]['date'][index]).getTime(), data[1]['open'][index], data[2]['high'][index], data[3]['low'][index], data[4]['close'][index]]);
         this.volumeData.push([new Date(data[0]['date'][index]).getTime(), data[5]['volume'][index]]);
       }
+        // this.setStockGraphData(this.stockData, this.volumeData, data[0]['date'].length);
+      this.setPriceGraphData(this.volumeData, data[0]['date'].length);
+      this.api.getApi('/getTrianglePattern').subscribe((pattern: any) => {
+        console.log('Triangle Pattern: ', pattern.trianglePattern);
+        const trianglePattern = pattern.trianglePattern;
+        for (let index = 0; index < pattern.trianglePattern.length; index++) {
+          for (let i = 0; i < 3; i++) {
+            this.trianglePattern.push([new Date(trianglePattern[index][i][0]).getTime(), trianglePattern[index][i][1]]);
+          }
+        }
+        console.log(new Date(trianglePattern[25][0][0]).getTime());
+        this.setTrianglePtternData(this.volumeData, this.trianglePattern, data[0]['date'].length);
         this.setStockGraphData(this.stockData, this.volumeData, data[0]['date'].length);
-        this.setPriceGraphData(this.volumeData, data[0]['date'].length);
-
-      // this.api.getApi('/getTrianglePattern').subscribe((pattern: any) => {
-      //   console.log('Triangle Pattern: ', pattern.trianglePattern);
-      //   const trianglePattern = pattern.trianglePattern;
-      //   for (let index = 0; index < pattern.trianglePattern.length; index++) {
+      }, (err) => {
+        console.log('Error: getTrianglePattern: ', err);
+      });
+      // this.api.getApi('/getZigZagPattern').subscribe((pattern: any) => {
+      //   console.log('ZigZag Pattern: ', pattern.zigzagPattern);
+      //   const zigzagPattern = pattern.zigzagPattern;
+      //   for (let index = 0; index < pattern.zigzagPattern.length; index++) {
       //     for (let i = 0; i < 3; i++) {
-      //       this.trianglePattern.push([new Date(trianglePattern[index][i][0]).getTime(), trianglePattern[index][i][1]]);
+      //       this.zigzagPattern.push([new Date(zigzagPattern[index][i][0]).getTime(), zigzagPattern[index][i][1]]);
       //     }
       //   }
-      //   console.log(new Date(trianglePattern[25][0][0]).getTime());
-      //   this.setTrianglePtternData(this.volumeData, this.trianglePattern, data[0]['date'].length);
+      //   this.setZigZagPtternData(this.volumeData, this.zigzagPattern, data[0]['date'].length);
       //   this.setStockGraphData(this.stockData, this.volumeData, data[0]['date'].length);
       // }, (err) => {
-      //   console.log('Error: getTrianglePattern: ', err);
+      //   console.log('Error: getZigZagPattern: ', err);
       // });
     }, (err) => {
       console.log('Error: getData: ', err);
@@ -62,7 +77,7 @@ export class StatisticsComponent implements OnInit {
         selected: 1
       },
       title: {
-        text: 'Dukascopy Historical Price'
+        text: 'Dukascopy Historical Price Graph'
       },
       plotOptions: {
         series: {
@@ -83,12 +98,44 @@ export class StatisticsComponent implements OnInit {
   }
 
   setTrianglePtternData(price, pattern, limit) {
-    this.price = new StockChart({
+    this.triangle = new StockChart({
       rangeSelector: {
         selected: 1
       },
       title: {
-        text: 'Dukascopy Historical Price'
+        text: 'Dukascopy Historical Triangle Patterns'
+      },
+      plotOptions: {
+        series: {
+          turboThreshold: limit
+        }
+      },
+      credits: {
+        enabled: false,
+      },
+      series: [{
+        name: 'Price',
+        data: price,
+        type: 'line',
+        color: '#734dc4',
+        id: 'price'
+      }, {
+        name: 'Pattern',
+        data: pattern,
+        type: 'line',
+        color: '#1fa47a',
+        id: 'pattern'
+      }],
+    });
+  }
+
+  setZigZagPtternData(price, pattern, limit) {
+    this.zigzag = new StockChart({
+      rangeSelector: {
+        selected: 1
+      },
+      title: {
+        text: 'Dukascopy Historical Zigzag Patterns'
       },
       plotOptions: {
         series: {
