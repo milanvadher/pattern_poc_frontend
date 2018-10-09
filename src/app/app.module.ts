@@ -16,6 +16,9 @@ import { UploadComponent } from './upload/upload.component';
 import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import stock from 'highcharts/modules/stock.src';
 import more from 'highcharts/highcharts-more.src';
+import { TempComponent } from './temp/temp.component';
+import { MatButtonModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule } from '@angular/material';
+
 registerLocaleData(zh);
 
 export function highchartsModules() {
@@ -28,7 +31,8 @@ export function highchartsModules() {
     AppComponent,
     StatisticsComponent,
     ViewChartsComponent,
-    UploadComponent
+    UploadComponent,
+    TempComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,13 @@ export function highchartsModules() {
     HttpClientModule,
     NgZorroAntdModule,
     AppRoutingModule,
-    ChartModule
+    ChartModule,
+    MatButtonModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }],
   bootstrap: [AppComponent]
