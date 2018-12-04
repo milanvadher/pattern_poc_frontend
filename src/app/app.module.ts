@@ -18,6 +18,10 @@ import stock from 'highcharts/modules/stock.src';
 import more from 'highcharts/highcharts-more.src';
 import { TempComponent } from './temp/temp.component';
 import { MatButtonModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule } from '@angular/material';
+import { SocketComponent } from './socket/socket.component';
+import { ChatService } from './chat.service';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from 'src/environments/environment';
 
 registerLocaleData(zh);
 
@@ -32,7 +36,8 @@ export function highchartsModules() {
     StatisticsComponent,
     ViewChartsComponent,
     UploadComponent,
-    TempComponent
+    TempComponent,
+    SocketComponent
   ],
   imports: [
     BrowserModule,
@@ -47,9 +52,10 @@ export function highchartsModules() {
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

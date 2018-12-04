@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^6.0.2",
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
+    "@angular/service-worker": "^7.1.0",
     "angular-highcharts": "^6.2.6",
     "chart.js": "^2.7.2",
     "core-js": "^2.5.4",
@@ -31,6 +32,8 @@
     "ng-zorro-antd": "^1.5.0",
     "ng2-charts": "^1.6.0",
     "rxjs": "^6.0.0",
+    "rxjs-compat": "^6.3.3",
+    "socket.io-client": "^2.1.1",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
