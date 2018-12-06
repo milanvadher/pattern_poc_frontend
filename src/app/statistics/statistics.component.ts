@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { StockChart } from 'angular-highcharts';
 import { RestapiService } from '../restapi.service';
+import { MatDialog, MatSnackBar } from '@angular/material';
+import { FeedbackComponent } from '../feedback/feedback.component';
 
 @Component({
   selector: 'app-statistics',
@@ -20,7 +22,7 @@ export class StatisticsComponent implements OnInit {
   stockData = [];
   volumeData = [];
   series = [];
-  constructor(public api: RestapiService) {
+  constructor(public api: RestapiService, public dialog: MatDialog, public snackBar: MatSnackBar) {
     this.getData();
   }
 
@@ -285,6 +287,32 @@ export class StatisticsComponent implements OnInit {
         data: volume,
         yAxis: 1,
       }]
+    });
+  }
+
+  openModal() {
+    const dialogRef = this.dialog.open(FeedbackComponent, {
+      data: { title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.' },
+      disableClose: true,
+      minWidth: 400,
+      panelClass: 'my-dialog'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed', result);
+      if (result) {
+        this.openSenakbar('Thanks for your feedback. Your feedback : ' + result)
+      } else if (result === null) {
+        this.openSenakbar('Thanks for your feedback.');
+      }
+    });
+  }
+
+  openSenakbar(msg, btn?) {
+    this.snackBar.open(msg, btn ? btn : '', {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 5000
     });
   }
 

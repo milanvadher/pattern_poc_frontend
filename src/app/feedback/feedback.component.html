@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+  <p>{{data.message}}</p>
+  <mat-form-field appearance="outline">
+    <mat-label>Message</mat-label>
+    <input matInput [(ngModel)]="message" cdkFocusInitial placeholder="Give your feedback">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-stroked-button [mat-dialog-close]="message" color='warn'>
+    <mat-icon>close</mat-icon>&nbsp; No
+  </button>
+  <button mat-flat-button color='primary' [mat-dialog-close]="message" cdkFocusInitial>
+    <mat-icon>done</mat-icon>&nbsp; Yes
+  </button>
+</div>
