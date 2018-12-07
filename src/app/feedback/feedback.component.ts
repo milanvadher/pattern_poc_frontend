@@ -16,6 +16,7 @@ export class FeedbackComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log('Data  : ', this.data);
   }
 
 }

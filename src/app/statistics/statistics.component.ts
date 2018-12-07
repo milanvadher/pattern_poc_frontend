@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { StockChart } from 'angular-highcharts';
 import { RestapiService } from '../restapi.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { FeedbackComponent } from '../feedback/feedback.component';
+import { Button } from 'selenium-webdriver';
 
 @Component({
   selector: 'app-statistics',
@@ -18,15 +19,22 @@ export class StatisticsComponent implements OnInit {
   // trianglePattern = [];
   trendingTrianglePattern = [];
   trendingTrianglePattern1 = [];
+  trendingDynamic = [];
   priceData = [];
   stockData = [];
   volumeData = [];
   series = [];
+
+  position = 0;
+  disabled: boolean = false;
+
+  @ViewChild('confirm') button: ElementRef;
   constructor(public api: RestapiService, public dialog: MatDialog, public snackBar: MatSnackBar) {
     this.getData();
   }
 
   ngOnInit() {
+
   }
 
   getData() {
@@ -64,8 +72,16 @@ export class StatisticsComponent implements OnInit {
         // for (let index = 0; index < trendingPattern1.length; index++) {
         //   this.trendingTrianglePattern1.push([new Date(new Date(new Date(trendingPattern1[index][0]).setHours(new Date(trendingPattern1[index][0]).getHours() + 5)).setMinutes(new Date(trendingPattern1[index][0]).getMinutes() + 30)).getTime(), trendingPattern1[index][1]]);
         // }
+        // this.series.push({
+        //   name: 'Price',
+        //   data: this.volumeData,
+        //   type: 'line',
+        //   color: '#734dc4',
+        //   id: 'price'
+        // });
         // console.log('trendingPattern', this.trendingTrianglePattern);
         // console.log('trendingPattern1', this.trendingTrianglePattern1);
+        // this.setTrendingTriangleDynamic(data[0]['date'].length);
         // this.setTrendingTrianglePtternData(this.volumeData, this.trendingTrianglePattern, this.trendingTrianglePattern1, data[0]['date'].length);
 
         // ---------------------------------------------------------------------------
@@ -96,16 +112,18 @@ export class StatisticsComponent implements OnInit {
             const e = element[i];
             ttFinal.push([new Date(new Date(new Date(e[0]).setHours(new Date(e[0]).getHours() + 5)).setMinutes(new Date(e[0]).getMinutes() + 30)).getTime(), e[1]])
           }
-          this.series.push({
-            name: 'Pattern',
-            data: ttFinal,
-            type: 'line',
-            color: '#1fa47a',
-            id: 'pattern' + index
-          });
+          this.trendingDynamic.push(ttFinal);
+          // this.series.push({
+          //   name: 'Pattern',
+          //   data: ttFinal,
+          //   type: 'line',
+          //   color: '#1fa47a',
+          //   id: 'pattern' + index
+          // });
         }
         console.log('Trending Tringle Pattern ***************************** ', this.series);
-        this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
+        this.setTrendingTriangleDynamic(data[0]['date'].length);
+        // this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
       }, (err) => {
         console.log('Error: getTrianglePattern: ', err);
       });
@@ -230,6 +248,29 @@ export class StatisticsComponent implements OnInit {
   //   });
   // }
 
+  setTrendingTriangleDynamic(limit) {
+    this.trendingTriangle = new StockChart({
+      rangeSelector: {
+        selected: 1
+      },
+      title: {
+        text: 'Dukascopy Historical Trending Triangle Patterns'
+      },
+      plotOptions: {
+        series: {
+          turboThreshold: limit
+        }
+      },
+      exporting: {
+        type: 'image/png'
+      },
+      credits: {
+        enabled: false,
+      },
+      series: this.series,
+    });
+  }
+
   setStockGraphData(stockdata, volume, limit) {
     this.stock = new StockChart({
       rangeSelector: {
@@ -291,8 +332,9 @@ export class StatisticsComponent implements OnInit {
   }
 
   openModal() {
+    this.disabled = true;
     const dialogRef = this.dialog.open(FeedbackComponent, {
-      data: { title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.' },
+      data: { title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.', data: { 'top': this.trendingDynamic[this.position], 'bottom': this.trendingDynamic[this.position + 1] } },
       disableClose: true,
       minWidth: 400,
       panelClass: 'my-dialog'
@@ -301,9 +343,41 @@ export class StatisticsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed', result);
       if (result) {
-        this.openSenakbar('Thanks for your feedback. Your feedback : ' + result)
-      } else if (result === null) {
-        this.openSenakbar('Thanks for your feedback.');
+        this.trendingTriangle.ref.showLoading();
+        this.openSenakbar('Thanks for your feedback. Your feedback : ' + result);
+        this.trendingTriangle.ref.addSeries({
+          name: 'Pattern',
+          data: this.trendingDynamic[this.position],
+          type: 'line',
+          color: '#1fa47a',
+          id: 'pattern-' + this.position
+        });
+        this.trendingTriangle.ref.addSeries({
+          name: 'Pattern',
+          data: this.trendingDynamic[this.position + 1],
+          type: 'line',
+          color: '#1fa47a',
+          id: 'pattern-' + this.position + 1
+        });
+        setTimeout(() => {
+          this.position += 2;
+          this.trendingTriangle.ref.hideLoading();
+          console.log(this.position - 2, ' : ', this.trendingTriangle.ref.get('pattern-' + (this.position - 2)));
+          console.log(this.position - 1, ' : ', this.trendingTriangle.ref.get('pattern-' + (this.position - 1)));
+          if (this.trendingDynamic.length > this.position) {
+            setTimeout(() => {
+              this.openModal();
+            }, 5000);
+          }
+        }, 2000);
+      } else {
+        this.position += 2;
+        this.openSenakbar('Thanks for your feedback. Your feedback : ' + result);
+        if (this.trendingDynamic.length > this.position) {
+          setTimeout(() => {
+            this.openModal();
+          }, 5000);
+        }
       }
     });
   }

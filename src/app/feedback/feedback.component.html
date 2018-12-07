@@ -1,16 +1,28 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
 <div mat-dialog-content>
   <p>{{data.message}}</p>
-  <mat-form-field appearance="outline">
+  <h3>Pattern : </h3>
+  <h5>Top - Point :</h5>
+  <p> <b> Date </b>: {{data.data.top[0][0] | date}}</p>
+  <p> <b> Value </b> : {{data.data.top[0][1]}}</p>
+  <br>
+  <h5>Bottom - Point :</h5>
+  <p> <b> Date </b>: {{data.data.bottom[0][0] | date}}</p>
+  <p> <b> Value </b> : {{data.data.bottom[0][1]}}</p>
+  <br>
+  <h5>Common - Point :</h5>
+  <p> <b> Date </b>: {{data.data.top[1][0] | date}}</p>
+  <p> <b> Value </b> : {{data.data.top[1][1]}}</p>
+  <!-- <mat-form-field appearance="outline">
     <mat-label>Message</mat-label>
     <input matInput [(ngModel)]="message" cdkFocusInitial placeholder="Give your feedback">
-  </mat-form-field>
+  </mat-form-field> -->
 </div>
 <div mat-dialog-actions>
-  <button mat-stroked-button [mat-dialog-close]="message" color='warn'>
+  <button mat-stroked-button [mat-dialog-close]="false" color='warn'>
     <mat-icon>close</mat-icon>&nbsp; No
   </button>
-  <button mat-flat-button color='primary' [mat-dialog-close]="message" cdkFocusInitial>
+  <button mat-flat-button color='primary' [mat-dialog-close]="true" cdkFocusInitial>
     <mat-icon>done</mat-icon>&nbsp; Yes
   </button>
 </div>
