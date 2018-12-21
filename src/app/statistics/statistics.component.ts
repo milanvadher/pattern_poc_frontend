@@ -130,9 +130,18 @@ export class StatisticsComponent implements OnInit {
     }, (err) => {
       console.log('Error: getData: ', err);
     });
+
+    /**
+     * Get Trending Pattern
+     */
+    this.api.getApi('/getTrendingPattern').subscribe((data) => {
+      console.log('DATA FROM GET TRENDING PATTERN : ', data);
+    }, (err) => {
+      console.error('DATA FROM GET TRENDING PATTERN ERROR : ', err);
+    });
   }
 
-  setPriceGraphData(price, limit) {
+  setPriceGraphData(price: Array<any>, limit: number) {
     this.price = new StockChart({
       rangeSelector: {
         selected: 1
@@ -190,7 +199,7 @@ export class StatisticsComponent implements OnInit {
   //   });
   // }
 
-  setTrendingTrianglePtternData(data, limit) {
+  setTrendingTrianglePtternData(data: Array<any>, limit: number) {
     this.trendingTriangle = new StockChart({
       rangeSelector: {
         selected: 1
@@ -248,7 +257,7 @@ export class StatisticsComponent implements OnInit {
   //   });
   // }
 
-  setTrendingTriangleDynamic(limit) {
+  setTrendingTriangleDynamic(limit: number) {
     this.trendingTriangle = new StockChart({
       rangeSelector: {
         selected: 1
@@ -382,7 +391,7 @@ export class StatisticsComponent implements OnInit {
     });
   }
 
-  openSenakbar(msg, btn?) {
+  openSenakbar(msg: string, btn?: string) {
     this.snackBar.open(msg, btn ? btn : '', {
       horizontalPosition: 'right',
       verticalPosition: 'top',

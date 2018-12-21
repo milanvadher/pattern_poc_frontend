@@ -1,16 +1,25 @@
 # Library used
 
 1. **Flask** ==> Flask is a microframework for Python, Used to create API endpoints.
+    * For creating endpoints for API, -- Get data from Frontend and send back to Frontend.
 
 2. **Pymongo** ==> For connection and perform the database tasks.
+    * Create bridge for any action on databse.
 
 3. **Flask_cors** ==> For handling the CROS requests accross diffrent domain.
+    * For allowing localhost to access API.
 
 4. **Pandas** ==> Pandas is an open source, providing high-performance, easy-to-use data structures and data analysis tools for the Python programming language.
+    * For Creating fast and flexible data structure and handling numbers of stock data.
+    * Handling data at upload time.
+    * Need every time when perform any action on data.
 
 5. **Numpy** ==> NumPy is the fundamental package for scientific computing with Python.
-
+    * For doing any mathematical action like finding top and bottom points.
+  
 6. **SciPy** ==> SciPy is a free and open-source Python library used for scientific computing and technical computing.
+    * In Scipy we are using `argrelextrema` function for identifying *peak* and *bottom* points.
+    * `argrelextrema` is only used when we want to perform actions for neighbours points.
 
 ***
 
@@ -18,7 +27,7 @@
 
 1. Get raw data from Database.
 
-2. Convert that data into pandas data formate.
+2. Convert that data into pandas data format.
 
 3. Delete duplicate data.
 

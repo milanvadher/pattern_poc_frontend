@@ -3,7 +3,6 @@
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-      <!-- <li nz-menu-item [nzSelected]="itemSelected === 1" (click)="navigateTo(1, 'charts', 'View Charts')"><span><i class="anticon anticon-area-chart"></i><span class="nav-text">View Charts</span></span></li> -->
       <li nz-menu-item [nzSelected]="itemSelected === 2" (click)="navigateTo(2, 'statistics', 'Statistics')">
         <span>
           <i class="anticon anticon-dashboard"></i>
@@ -24,7 +23,6 @@
         [class.anticon-menu-unfold]="isCollapsed" (click)="isCollapsed=!isCollapsed"></i>
       <h2 style="float: left; margin-bottom: 0">Pattern Recognition</h2>
       <div class="usermenu">
-        <!-- <nz-avatar nzIcon="anticon anticon-user" nzSrc="https://qph.fs.quoracdn.net/main-thumb-200537039-200-yzzdxnjrgyziepvulsexsojmhgbqdkkb.jpeg"></nz-avatar> -->
         <nz-avatar nzText="M" style="color:#ffffff; background-color:#1FA47A;"></nz-avatar>&nbsp;&nbsp;<b>Username</b>
       </div>
     </nz-header>
@@ -36,8 +34,7 @@
         <app-view-charts *ngIf="itemSelected === 1"></app-view-charts>
         <app-statistics *ngIf="itemSelected === 2"></app-statistics>
         <app-upload *ngIf="itemSelected === 3"></app-upload>
-        <!-- <app-temp></app-temp> -->
-        <!-- <app-socket></app-socket> -->
+        <app-try-api></app-try-api>
       </div>
     </nz-content>
     <nz-footer style="text-align: center;">Footer Comes here.</nz-footer>

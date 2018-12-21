@@ -1,0 +1,54 @@
+button {
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.pr {
+    /* padding-right: 20px; */
+    padding-bottom: 20px;
+    width: 100%;
+}
+
+.btn-icon {
+    font-size: 130%;
+}
+
+.space {
+    display: flex;
+    flex: 1 0;
+}
+
+.right {
+    order: 2;
+    margin-left: auto;
+}
+
+.btn-row {
+    display: flex;
+    margin-top: 15px;
+}
+
+@media (min-width: 992px) {
+    .pr {
+        padding-right: 20px;
+        padding-bottom: 20px;
+        width: 50%;
+    }
+}
+
+@media (max-width: 600px) {
+    .btn-row {
+        display: grid;
+        text-align: center;
+    }
+    .right {
+        display: grid;
+        text-align: center;
+        margin: 0;
+    }
+    button {
+        margin-right: 0px;
+        margin-bottom: 10px;
+        /* max-width: 120px; */
+    }
+}

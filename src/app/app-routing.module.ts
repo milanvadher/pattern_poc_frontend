@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TempComponent } from './temp/temp.component';
 import { SocketComponent } from './socket/socket.component';
+import { TryApiComponent } from './try-api/try-api.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/socket', pathMatch: 'full' },
@@ -11,7 +12,8 @@ const routes: Routes = [
   { path: 'statistics', component: StatisticsComponent },
   { path: 'upload', component: UploadComponent },
   { path: 'temp', component: TempComponent },
-  { path: 'socket', component: SocketComponent }
+  { path: 'socket', component: SocketComponent },
+  { path: 'try', component: TryApiComponent }
 ];
 
 @NgModule({

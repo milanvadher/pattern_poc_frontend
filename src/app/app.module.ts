@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgZorroAntdModule, NZ_I18N, zh_CN } from 'ng-zorro-antd';
 import { registerLocaleData } from '@angular/common';
@@ -17,13 +17,14 @@ import { ChartModule, HIGHCHARTS_MODULES } from 'angular-highcharts';
 import stock from 'highcharts/modules/stock.src';
 import more from 'highcharts/highcharts-more.src';
 import { TempComponent } from './temp/temp.component';
-import { MatButtonModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule, MatDialogModule, MatSnackBarModule, MatIconModule } from '@angular/material';
+import { MatButtonModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatSortModule, MatTableModule, MatDialogModule, MatSnackBarModule, MatIconModule, MatListModule, MatExpansionModule, MatSelectModule, MatChipsModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { SocketComponent } from './socket/socket.component';
 import { ChatService } from './chat.service';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from 'src/environments/environment';
 import { FeedbackComponent } from './feedback/feedback.component';
 import en from '@angular/common/locales/en';
+import { TryApiComponent } from './try-api/try-api.component';
 
 registerLocaleData(en);
 
@@ -40,12 +41,14 @@ export function highchartsModules() {
     UploadComponent,
     TempComponent,
     SocketComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    TryApiComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     NgZorroAntdModule,
     AppRoutingModule,
@@ -59,6 +62,12 @@ export function highchartsModules() {
     MatDialogModule,
     MatSnackBarModule,
     MatIconModule,
+    MatListModule,
+    MatExpansionModule,
+    MatSelectModule,
+    MatChipsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ServiceWorkerModule.register('/ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }, ChatService],

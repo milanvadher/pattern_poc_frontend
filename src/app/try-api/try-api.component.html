@@ -1,0 +1,212 @@
+<h3>D. F. C. : </h3>
+
+<button mat-raised-button color="primary" (click)="createItem()">Add Field</button>
+<form [formGroup]="fieldForm">
+    <div formArrayName="newField_form_array">
+        <mat-accordion>
+            <div *ngFor="let newField_form_array of newFieldForm.controls; let i=index" [formGroupName]="i">
+                <!-- <mat-expansion-panel *ngFor="let field of fields"> -->
+                <mat-expansion-panel>
+
+                    <!-- Title -->
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            {{field?.name | titlecase }}
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{field?.type | titlecase }}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <!-- Lable -->
+                    <mat-form-field appearance="outline" class="pr">
+                        <mat-label>Lable text</mat-label>
+                        <input matInput formControlName="lable" placeholder="Enter Lable">
+                        <mat-hint>Display in field lable</mat-hint>
+                    </mat-form-field>
+
+                    <!-- Field type -->
+                    <mat-form-field appearance="outline" class="pr">
+                        <mat-label>Field type</mat-label>
+                        <mat-select formControlName="type" #select placeholder="Enter Input type" required>
+                            <mat-option *ngFor="let type of types" [value]="type">
+                                {{type | titlecase }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-hint>Type of field</mat-hint>
+                    </mat-form-field>
+
+                    <!-- Field name -->
+                    <mat-form-field appearance="outline" class="pr">
+                        <mat-label>Field name</mat-label>
+                        <input matInput formControlName="name" placeholder="Enter Name">
+                        <mat-hint>For field name</mat-hint>
+                    </mat-form-field>
+
+                    <!-- If field is Input -->
+                    <mat-form-field appearance="outline" class="pr" *ngIf="select.value == 'input'">
+                        <mat-label>Input type</mat-label>
+                        <input matInput formControlName="inputType" placeholder="Enter Input-type">
+                        <mat-hint>Type of Input field</mat-hint>
+                    </mat-form-field>
+
+                    <!-- If field is Radiobutton || Select -->
+                    <mat-form-field appearance="outline" class="pr" *ngIf="select.value == 'radiobutton' || select.value == 'select'">
+                        <mat-label>Options</mat-label>
+                        <mat-chip-list #chipList>
+                            <mat-chip color="accent" *ngFor="let item of field?.options" [selectable]="true"
+                                [removable]="true" (removed)="remove(item)">
+                                {{item}}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <input formControlName="options" placeholder="Enter options..." [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                        <mat-hint>Enter options</mat-hint>
+                    </mat-form-field>
+
+                    <!-- If field is Date & with min-max validation -->
+                    <mat-form-field appearance="outline" class="pr" *ngIf="select.value == 'date'">
+                        <mat-label>Min Date</mat-label>
+                        <input matInput [matDatepicker]="min" placeholder="Enter Min date" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="min"></mat-datepicker-toggle>
+                        <mat-datepicker #min disabled="false"></mat-datepicker>
+                        <mat-hint>Select min date</mat-hint>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="pr" *ngIf="select.value == 'date'">
+                        <mat-label>Max Date</mat-label>
+                        <input matInput [matDatepicker]="max" placeholder="Enter Max date" disabled>
+                        <mat-datepicker-toggle matSuffix [for]="max"></mat-datepicker-toggle>
+                        <mat-datepicker #max disabled="false"></mat-datepicker>
+                        <mat-hint>Select max date</mat-hint>
+                    </mat-form-field>
+
+                    <h4>Validations:</h4>
+                    <button mat-raised-button color="warn" (click)="createValidationItem(i)">
+                        <mat-icon class="btn-icon">add</mat-icon> Add New Validation
+                    </button>
+                    <br>
+
+                    <!-- Footer actions -->
+                    <div class="btn-row">
+                        <button mat-raised-button color="primary" type="submit">
+                            <mat-icon class="btn-icon">save</mat-icon> Save
+                        </button>
+                        <button mat-raised-button type="reset">
+                            <mat-icon class="btn-icon">replay</mat-icon> Reset
+                        </button>
+                        <div class="right">
+                            <button mat-raised-button color="warn">
+                                <mat-icon class="btn-icon">delete</mat-icon> Delete
+                            </button>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+            </div>
+        </mat-accordion>
+    </div>
+</form>
+
+<button mat-raised-button color="primary" (click)="submitForm()">
+    <mat-icon class="btn-icon">save</mat-icon> Save
+</button>
+<!-- <ul id="todo-list">
+    <li *ngFor="let data of data$ | async" >
+        {{data.id}} - {{data.name}}
+    </li>
+</ul> -->
+
+<!-- <mat-accordion>
+    <mat-expansion-panel *ngFor="let field of fields">
+
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                {{field?.name | titlecase }}
+            </mat-panel-title>
+            <mat-panel-description>
+                {{field?.type | titlecase }}
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field appearance="outline" class="pr">
+            <mat-label>Lable text</mat-label>
+            <input matInput formControlName="lable" placeholder="Enter Lable">
+            <mat-hint>Display in field lable</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pr">
+            <mat-label>Field type</mat-label>
+            <mat-select formControlName="type" placeholder="Enter Input type" value="{{field?.type}}" required>
+                <mat-option *ngFor="let type of types" [value]="type">
+                    {{type | titlecase }}
+                </mat-option>
+            </mat-select>
+            <mat-hint>Type of field</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pr">
+            <mat-label>Field name</mat-label>
+            <input matInput formControlName="name" placeholder="Enter Name">
+            <mat-hint>For field name</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pr" *ngIf="field?.type == 'input'">
+            <mat-label>Input type</mat-label>
+            <input matInput formControlName="inputType" placeholder="Enter Input-type">
+            <mat-hint>Type of Input field</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pr" *ngIf="field?.type == 'radiobutton' || field?.type == 'select'">
+            <mat-label>Options</mat-label>
+            <mat-chip-list #chipList>
+                <mat-chip color="accent" *ngFor="let item of field?.options" [selectable]="true" [removable]="true"
+                    (removed)="remove(item)">
+                    {{item}}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                </mat-chip>
+                <input formControlName="options" placeholder="Enter options..." [matChipInputFor]="chipList"
+                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                    (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-hint>Enter options</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="pr" *ngIf="field?.type == 'date'">
+            <mat-label>Min Date</mat-label>
+            <input matInput [matDatepicker]="min" placeholder="Enter Min date" disabled>
+            <mat-datepicker-toggle matSuffix [for]="min"></mat-datepicker-toggle>
+            <mat-datepicker #min disabled="false"></mat-datepicker>
+            <mat-hint>Select min date</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="pr" *ngIf="field?.type == 'date'">
+            <mat-label>Max Date</mat-label>
+            <input matInput [matDatepicker]="max" placeholder="Enter Max date" disabled>
+            <mat-datepicker-toggle matSuffix [for]="max"></mat-datepicker-toggle>
+            <mat-datepicker #max disabled="false"></mat-datepicker>
+            <mat-hint>Select max date</mat-hint>
+        </mat-form-field>
+
+        <h4>Validations:</h4>
+        <button mat-raised-button color="warn">
+            <mat-icon class="btn-icon">add</mat-icon> Add New Validation
+        </button>
+        <br>
+
+        <div class="btn-row">
+            <button mat-raised-button color="primary" type="submit">
+                <mat-icon class="btn-icon">save</mat-icon> Save
+            </button>
+            <button mat-raised-button type="reset">
+                <mat-icon class="btn-icon">replay</mat-icon> Reset
+            </button>
+            <div class="right">
+                <button mat-raised-button color="warn">
+                    <mat-icon class="btn-icon">delete</mat-icon> Delete
+                </button>
+            </div>
+        </div>
+
+    </mat-expansion-panel>
+</mat-accordion> -->
