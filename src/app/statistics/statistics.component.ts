@@ -61,68 +61,19 @@ export class StatisticsComponent implements OnInit {
       //   console.log('Error: getTrianglePattern: ', err);
       // });
       this.api.getApi('/getTrendingTrianglePattern').subscribe((pattern: any) => {
-        console.log('getTrendingTrianglePattern: ', pattern.final_pattern);
 
-        // for first pattern
-        // const trendingPattern = pattern.final_pattern[0].bottom;
-        // const trendingPattern1 = pattern.final_pattern[0].top;
-        // for (let index = 0; index < trendingPattern.length; index++) {
-        //   this.trendingTrianglePattern.push([new Date(new Date(new Date(trendingPattern[index][0]).setHours(new Date(trendingPattern[index][0]).getHours() + 5)).setMinutes(new Date(trendingPattern[index][0]).getMinutes() + 30)).getTime(), trendingPattern[index][1]]);
-        // }
-        // for (let index = 0; index < trendingPattern1.length; index++) {
-        //   this.trendingTrianglePattern1.push([new Date(new Date(new Date(trendingPattern1[index][0]).setHours(new Date(trendingPattern1[index][0]).getHours() + 5)).setMinutes(new Date(trendingPattern1[index][0]).getMinutes() + 30)).getTime(), trendingPattern1[index][1]]);
-        // }
-        // this.series.push({
-        //   name: 'Price',
-        //   data: this.volumeData,
-        //   type: 'line',
-        //   color: '#734dc4',
-        //   id: 'price'
-        // });
-        // console.log('trendingPattern', this.trendingTrianglePattern);
-        // console.log('trendingPattern1', this.trendingTrianglePattern1);
-        // this.setTrendingTriangleDynamic(data[0]['date'].length);
-        // this.setTrendingTrianglePtternData(this.volumeData, this.trendingTrianglePattern, this.trendingTrianglePattern1, data[0]['date'].length);
+        console.log('getTrendingTrianglePattern: ', pattern.final_pattern);
 
         // ---------------------------------------------------------------------------
         //  @for all Patterns display
         // ---------------------------------------------------------------------------
+        this.allPatternInOnce(pattern, data);
 
-        /**
-         * For All the pattern
-         */
+        // ---------------------------------------------------------------------------
+        //  @for Patterns display one by one
+        // ---------------------------------------------------------------------------
+        // this.dynamicTrianglePattern(pattern,data);
 
-        let ttPattern = [];
-        let ttFinal = [];
-        for (let index = 0; index < pattern.final_pattern.length; index++) {
-          ttPattern.push(pattern.final_pattern[index].bottom);
-          ttPattern.push(pattern.final_pattern[index].top);
-        }
-        this.series.push({
-          name: 'Price',
-          data: this.volumeData,
-          type: 'line',
-          color: '#734dc4',
-          id: 'price'
-        });
-        for (let index = 0; index < ttPattern.length; index++) {
-          ttFinal = []
-          const element = ttPattern[index];
-          for (let i = 0; i < element.length; i++) {
-            const e = element[i];
-            ttFinal.push([new Date(new Date(new Date(e[0]).setHours(new Date(e[0]).getHours() + 5)).setMinutes(new Date(e[0]).getMinutes() + 30)).getTime(), e[1]])
-          }
-          this.trendingDynamic.push(ttFinal);
-          // this.series.push({
-          //   name: 'Pattern',
-          //   data: ttFinal,
-          //   type: 'line',
-          //   color: '#1fa47a',
-          //   id: 'pattern' + index
-          // });
-        }
-        console.log('Trending Tringle Pattern ***************************** ', this.series);
-        this.setTrendingTriangleDynamic(data[0]['date'].length);
         // this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
       }, (err) => {
         console.log('Error: getTrianglePattern: ', err);
@@ -139,6 +90,75 @@ export class StatisticsComponent implements OnInit {
     }, (err) => {
       console.error('DATA FROM GET TRENDING PATTERN ERROR : ', err);
     });
+  }
+
+  allPatternInOnce(pattern, data) {
+    this.series.push({
+      name: 'Price',
+      data: this.volumeData,
+      type: 'line',
+      color: '#734dc4',
+      id: 'price'
+    });
+    const trendingPattern = pattern.final_pattern;
+    let trendingPattern1: any[];
+    for (let index = 0; index < trendingPattern.length; index++) {
+      trendingPattern1 = [];
+      trendingPattern1.push([new Date(new Date(new Date(trendingPattern[index].bottom[0][0]).setHours(new Date(trendingPattern[index].bottom[0][0]).getHours() + 5)).setMinutes(new Date(trendingPattern[index].bottom[0][0]).getMinutes() + 30)).getTime(), trendingPattern[index].bottom[0][1]]);
+      trendingPattern1.push([new Date(new Date(new Date(trendingPattern[index].bottom[1][0]).setHours(new Date(trendingPattern[index].bottom[1][0]).getHours() + 5)).setMinutes(new Date(trendingPattern[index].bottom[1][0]).getMinutes() + 30)).getTime(), trendingPattern[index].bottom[1][1]]);
+      this.series.push({
+        name: 'Price',
+        data: trendingPattern1,
+        type: 'line',
+        color: '#1fa47a',
+        id: 'price'
+      });
+      trendingPattern1 = [];
+      trendingPattern1.push([new Date(new Date(new Date(trendingPattern[index].top[0][0]).setHours(new Date(trendingPattern[index].top[0][0]).getHours() + 5)).setMinutes(new Date(trendingPattern[index].top[0][0]).getMinutes() + 30)).getTime(), trendingPattern[index].top[0][1]]);
+      trendingPattern1.push([new Date(new Date(new Date(trendingPattern[index].top[1][0]).setHours(new Date(trendingPattern[index].top[1][0]).getHours() + 5)).setMinutes(new Date(trendingPattern[index].top[1][0]).getMinutes() + 30)).getTime(), trendingPattern[index].top[1][1]]);
+      this.series.push({
+        name: 'Price',
+        data: trendingPattern1,
+        type: 'line',
+        color: '#1fa47a',
+        id: 'price'
+      });
+    }
+    this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
+  }
+
+  dynamicTrianglePattern(pattern, data) {
+    let ttPattern = [];
+    let ttFinal = [];
+    for (let index = 0; index < pattern.final_pattern.length; index++) {
+      ttPattern.push(pattern.final_pattern[index].bottom);
+      ttPattern.push(pattern.final_pattern[index].top);
+    }
+    this.series.push({
+      name: 'Price',
+      data: this.volumeData,
+      type: 'line',
+      color: '#734dc4',
+      id: 'price'
+    });
+    for (let index = 0; index < ttPattern.length; index++) {
+      ttFinal = []
+      const element = ttPattern[index];
+      for (let i = 0; i < element.length; i++) {
+        const e = element[i];
+        ttFinal.push([new Date(new Date(new Date(e[0]).setHours(new Date(e[0]).getHours() + 5)).setMinutes(new Date(e[0]).getMinutes() + 30)).getTime(), e[1]])
+      }
+      this.trendingDynamic.push(ttFinal);
+      // this.series.push({
+      //   name: 'Pattern',
+      //   data: ttFinal,
+      //   type: 'line',
+      //   color: '#1fa47a',
+      //   id: 'pattern' + index
+      // });
+    }
+    console.log('Trending Tringle Pattern ***************************** ', this.series);
+    this.setTrendingTriangleDynamic(data[0]['date'].length);
   }
 
   setPriceGraphData(price: Array<any>, limit: number) {
