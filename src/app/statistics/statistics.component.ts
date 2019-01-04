@@ -3,7 +3,7 @@ import { StockChart } from 'angular-highcharts';
 import { RestapiService } from '../restapi.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { FeedbackComponent } from '../feedback/feedback.component';
-import { Button } from 'selenium-webdriver';
+import { TestPatternPopupComponent } from '../test-pattern-popup/test-pattern-popup.component';
 
 @Component({
   selector: 'app-statistics',
@@ -16,6 +16,8 @@ export class StatisticsComponent implements OnInit {
   price: StockChart;
   // triangle: StockChart;
   trendingTriangle: StockChart;
+  futureTrending: StockChart;
+  testPattern: StockChart;
   // trianglePattern = [];
   trendingTrianglePattern = [];
   trendingTrianglePattern1 = [];
@@ -72,9 +74,12 @@ export class StatisticsComponent implements OnInit {
         // ---------------------------------------------------------------------------
         //  @for Patterns display one by one
         // ---------------------------------------------------------------------------
-        // this.dynamicTrianglePattern(pattern,data);
+        // this.dynamicTrianglePattern(pattern, data);
 
-        // this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
+        this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
+
+        this.testGetData(data[0]['date'].length, this.volumeData);
+
       }, (err) => {
         console.log('Error: getTrianglePattern: ', err);
       });
@@ -89,6 +94,25 @@ export class StatisticsComponent implements OnInit {
       console.log('DATA FROM GET TRENDING PATTERN : ', data);
     }, (err) => {
       console.error('DATA FROM GET TRENDING PATTERN ERROR : ', err);
+    });
+  }
+
+  testGetData(limit: number, price) {
+    this.api.getApi('/getTestPattern').subscribe((test_data: any) => {
+      console.log('gETtESTpATTERN API Data : ', test_data);
+      let _top_data = [];
+      let _bottom_data = [];
+      for (let index = 0; index < test_data.data1.length; index++) {
+        const element = test_data.data1[index];
+        _top_data.push([new Date(new Date(new Date(element[1]).setHours(new Date(element[1]).getHours() + 5)).setMinutes(new Date(element[1]).getMinutes() + 30)).getTime(), element[0]])
+      }
+      for (let index = 0; index < test_data.data2.length; index++) {
+        const element = test_data.data2[index];
+        _bottom_data.push([new Date(new Date(new Date(element[1]).setHours(new Date(element[1]).getHours() + 5)).setMinutes(new Date(element[1]).getMinutes() + 30)).getTime(), element[0]])
+      }
+      this.setTestApiData(limit, price, _top_data, _bottom_data);
+    }, (err) => {
+      console.log('ERROR to GET Test PATTERN : ', err);
     });
   }
 
@@ -127,39 +151,39 @@ export class StatisticsComponent implements OnInit {
     this.setTrendingTrianglePtternData(this.series, data[0]['date'].length);
   }
 
-  dynamicTrianglePattern(pattern, data) {
-    let ttPattern = [];
-    let ttFinal = [];
-    for (let index = 0; index < pattern.final_pattern.length; index++) {
-      ttPattern.push(pattern.final_pattern[index].bottom);
-      ttPattern.push(pattern.final_pattern[index].top);
-    }
-    this.series.push({
-      name: 'Price',
-      data: this.volumeData,
-      type: 'line',
-      color: '#734dc4',
-      id: 'price'
-    });
-    for (let index = 0; index < ttPattern.length; index++) {
-      ttFinal = []
-      const element = ttPattern[index];
-      for (let i = 0; i < element.length; i++) {
-        const e = element[i];
-        ttFinal.push([new Date(new Date(new Date(e[0]).setHours(new Date(e[0]).getHours() + 5)).setMinutes(new Date(e[0]).getMinutes() + 30)).getTime(), e[1]])
-      }
-      this.trendingDynamic.push(ttFinal);
-      // this.series.push({
-      //   name: 'Pattern',
-      //   data: ttFinal,
-      //   type: 'line',
-      //   color: '#1fa47a',
-      //   id: 'pattern' + index
-      // });
-    }
-    console.log('Trending Tringle Pattern ***************************** ', this.series);
-    this.setTrendingTriangleDynamic(data[0]['date'].length);
-  }
+  // dynamicTrianglePattern(pattern, data) {
+  //   let ttPattern = [];
+  //   let ttFinal = [];
+  //   for (let index = 0; index < pattern.final_pattern.length; index++) {
+  //     ttPattern.push(pattern.final_pattern[index].bottom);
+  //     ttPattern.push(pattern.final_pattern[index].top);
+  //   }
+  //   this.series.push({
+  //     name: 'Price',
+  //     data: this.volumeData,
+  //     type: 'line',
+  //     color: '#734dc4',
+  //     id: 'price'
+  //   });
+  //   for (let index = 0; index < ttPattern.length; index++) {
+  //     ttFinal = [];
+  //     const element = ttPattern[index];
+  //     for (let i = 0; i < element.length; i++) {
+  //       const e = element[i];
+  //       ttFinal.push([new Date(new Date(new Date(e[0]).setHours(new Date(e[0]).getHours() + 5)).setMinutes(new Date(e[0]).getMinutes() + 30)).getTime(), e[1]]);
+  //     }
+  //     this.trendingDynamic.push(ttFinal);
+  //     // this.series.push({
+  //     //   name: 'Pattern',
+  //     //   data: ttFinal,
+  //     //   type: 'line',
+  //     //   color: '#1fa47a',
+  //     //   id: 'pattern' + index
+  //     // });
+  //   }
+  //   console.log('Trending Tringle Pattern ***************************** ', this.series);
+  //   this.setTrendingTriangleDynamic(data[0]['date'].length);
+  // }
 
   setPriceGraphData(price: Array<any>, limit: number) {
     this.price = new StockChart({
@@ -220,7 +244,7 @@ export class StatisticsComponent implements OnInit {
   // }
 
   setTrendingTrianglePtternData(data: Array<any>, limit: number) {
-    this.trendingTriangle = new StockChart({
+    this.futureTrending = new StockChart({
       rangeSelector: {
         selected: 1
       },
@@ -277,27 +301,76 @@ export class StatisticsComponent implements OnInit {
   //   });
   // }
 
-  setTrendingTriangleDynamic(limit: number) {
-    this.trendingTriangle = new StockChart({
+  // setTrendingTriangleDynamic(limit: number) {
+  //   this.trendingTriangle = new StockChart({
+  //     rangeSelector: {
+  //       selected: 1
+  //     },
+  //     title: {
+  //       text: 'Dukascopy Historical Trending Triangle Patterns'
+  //     },
+  //     plotOptions: {
+  //       series: {
+  //         turboThreshold: limit
+  //       }
+  //     },
+  //     exporting: {
+  //       type: 'image/png'
+  //     },
+  //     credits: {
+  //       enabled: false,
+  //     },
+  //     series: this.series,
+  //   });
+  // }
+
+  /**
+   * 5-3-5 pattern chart
+   * @param limit number 
+   * @param price array
+   * @param topLine array
+   * @param bottomLine array
+   */
+  setTestApiData(limit: number, price, topLine, bottomLine) {
+    this.testPattern = new StockChart({
       rangeSelector: {
         selected: 1
       },
       title: {
-        text: 'Dukascopy Historical Trending Triangle Patterns'
+        text: '5-3-5 Pattern Example'
       },
       plotOptions: {
         series: {
           turboThreshold: limit
         }
       },
-      exporting: {
-        type: 'image/png'
-      },
       credits: {
-        enabled: false,
+        enabled: false
       },
-      series: this.series,
+      series: [{
+        name: 'Price',
+        data: price,
+        type: 'line',
+        color: '#734dc4',
+        id: 'price'
+      }, {
+        name: 'Pattern',
+        data: topLine,
+        type: 'line',
+        color: '#1fa47a',
+        id: 'pattern'
+      }, {
+        name: 'Pattern',
+        data: bottomLine,
+        type: 'line',
+        color: '#1fa47a',
+        id: 'pattern'
+      }]
     });
+
+    setTimeout(() => {
+      this.openTestModalConfirm(topLine, bottomLine);
+    }, 1000);
   }
 
   setStockGraphData(stockdata, volume, limit) {
@@ -405,8 +478,26 @@ export class StatisticsComponent implements OnInit {
         if (this.trendingDynamic.length > this.position) {
           setTimeout(() => {
             this.openModal();
-          }, 5000);
+          }, 10000);
         }
+      }
+    });
+  }
+
+  openTestModalConfirm(top: any, bottom: any) {
+    const dialogRef = this.dialog.open(TestPatternPopupComponent, {
+      data: { title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.', data: { top: top, bottom: bottom } },
+      disableClose: true,
+      minWidth: 400,
+      panelClass: 'my-dialog'
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) {
+        this.testPattern.ref.get('pattern').remove();
+        this.testPattern.ref.get('pattern').remove();
+        this.openSenakbar('Thanks for your feedback. Your feedback : No');
+      } else {
+        this.openSenakbar('Thanks for your feedback. Your feedback : Yes');
       }
     });
   }

@@ -1,0 +1,14 @@
+.mat-dialog-actions {
+    text-align: center;
+    display: block;
+    padding: 12px 0px 25px 0px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+button {
+    margin: 0 10px;
+    border-radius: 5px;
+}
