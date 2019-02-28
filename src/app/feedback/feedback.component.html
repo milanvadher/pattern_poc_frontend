@@ -1,22 +1,13 @@
 <h1 mat-dialog-title>{{data.title}}</h1>
+<p>{{data.message}}</p>
+<h3>Pattern : </h3>
 <div mat-dialog-content>
-  <p>{{data.message}}</p>
-  <h3>Pattern : </h3>
-  <h5>Top - Point :</h5>
-  <p> <b> Date </b>: {{data.data.top[0][0] | date:'medium'}}</p>
-  <p> <b> Value </b> : {{data.data.top[0][1]}}</p>
-  <br>
-  <h5>Bottom - Point :</h5>
-  <p> <b> Date </b>: {{data.data.bottom[0][0] | date:'medium'}}</p>
-  <p> <b> Value </b> : {{data.data.bottom[0][1]}}</p>
-  <br>
-  <h5>Common - Point :</h5>
-  <p> <b> Date </b>: {{data.data.top[1][0] | date:'medium'}}</p>
-  <p> <b> Value </b> : {{data.data.top[1][1]}}</p>
-  <!-- <mat-form-field appearance="outline">
-    <mat-label>Message</mat-label>
-    <input matInput [(ngModel)]="message" cdkFocusInitial placeholder="Give your feedback">
-  </mat-form-field> -->
+  <div *ngFor="let item of data.data; let i = index">
+    <h5>Point - {{i+1}} :</h5>
+    <p> <b> Date </b>: {{item[0] | date:'medium'}}</p>
+    <p> <b> Value </b> : {{item[1]}}</p>
+    <br>
+  </div>
 </div>
 <div mat-dialog-actions>
   <button mat-stroked-button [mat-dialog-close]="false" color='warn'>

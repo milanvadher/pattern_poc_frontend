@@ -1,6 +1,7 @@
 import { Component, ViewChild, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { ChatService } from './chat.service';
+import { RestapiService } from './restapi.service';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,12 @@ export class AppComponent {
 
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
-  constructor(public route: Router, public charservice: ChatService) {
-    // this.navigateTo(1, 'charts', 'View Charts');
-    this.navigateTo(2, 'statistics', 'Statistics');
+  constructor(public route: Router, public charservice: ChatService, private api: RestapiService) {
+    // this.navigateTo(3, 'upload', 'Upload CSV');
+    this.navigateTo(4, 'test', 'New API');
+    this.api.subscibetoChangeRoute().subscribe(() => {
+      this.navigateTo(2, 'statistics', 'Statistics');
+    });
   }
 
   /** custom trigger can be TemplateRef **/

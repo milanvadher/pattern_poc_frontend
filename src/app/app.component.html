@@ -3,9 +3,15 @@
     <div class="logo">
     </div>
     <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
-      <li nz-menu-item [nzSelected]="itemSelected === 2" (click)="navigateTo(2, 'statistics', 'Statistics')">
+      <!-- <li nz-menu-item [nzSelected]="itemSelected === 2" (click)="navigateTo(2, 'statistics', 'Statistics')">
         <span>
           <i class="anticon anticon-dashboard"></i>
+          <span class="nav-text">Statistics</span>
+        </span>
+      </li> -->
+      <li nz-menu-item [nzSelected]="itemSelected === 4" (click)="navigateTo(4, 'test', 'New API')">
+        <span>
+          <i class="anticon anticon-cloud-upload-o"></i>
           <span class="nav-text">Statistics</span>
         </span>
       </li>
@@ -34,6 +40,7 @@
         <app-view-charts *ngIf="itemSelected === 1"></app-view-charts>
         <app-statistics *ngIf="itemSelected === 2"></app-statistics>
         <app-upload *ngIf="itemSelected === 3"></app-upload>
+        <app-new-api *ngIf="itemSelected === 4"></app-new-api>
         <!-- <app-try-api></app-try-api> -->
       </div>
     </nz-content>

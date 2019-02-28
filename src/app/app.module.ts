@@ -26,6 +26,8 @@ import { FeedbackComponent } from './feedback/feedback.component';
 import en from '@angular/common/locales/en';
 import { TryApiComponent } from './try-api/try-api.component';
 import { TestPatternPopupComponent } from './test-pattern-popup/test-pattern-popup.component';
+import { LoadingComponent } from './loading/loading.component';
+import { NewApiComponent } from './new-api/new-api.component';
 
 registerLocaleData(en);
 
@@ -44,7 +46,9 @@ export function highchartsModules() {
     SocketComponent,
     FeedbackComponent,
     TryApiComponent,
-    TestPatternPopupComponent
+    TestPatternPopupComponent,
+    LoadingComponent,
+    NewApiComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +78,6 @@ export function highchartsModules() {
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }, ChatService],
   bootstrap: [AppComponent],
-  entryComponents: [FeedbackComponent, TestPatternPopupComponent]
+  entryComponents: [FeedbackComponent, TestPatternPopupComponent, LoadingComponent]
 })
 export class AppModule { }
