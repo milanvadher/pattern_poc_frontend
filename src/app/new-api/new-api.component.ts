@@ -3,6 +3,7 @@ import { StockChart } from 'angular-highcharts';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { RestapiService } from '../restapi.service';
 import { FeedbackComponent } from '../feedback/feedback.component';
+import { LoadingComponent } from '../loading/loading.component';
 
 @Component({
   selector: 'app-new-api',
@@ -31,6 +32,7 @@ export class NewApiComponent implements OnInit {
   }
 
   async loadAllPatternData() {
+    this.startLoading();
     try {
       let series = [];
       let matchSeries = [];
@@ -115,8 +117,10 @@ export class NewApiComponent implements OnInit {
           this.setStockData(_data.priceData.length, series);
           this.setMatchData(_data.priceData.length, matchSeries);
           this.length = this.matchedPattern.length;
+          this.api.stopLoading();
           // this.askUserForPatternMatch();
         } else {
+          this.api.stopLoading();
           this.snackBar.open(data.msg, 'Okay', {
             horizontalPosition: 'right',
             verticalPosition: 'top',
@@ -125,6 +129,7 @@ export class NewApiComponent implements OnInit {
         }
       });
     } catch (error) {
+      this.api.stopLoading();
       this.snackBar.open(error, 'Okay', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -137,6 +142,7 @@ export class NewApiComponent implements OnInit {
     try {
       let series1 = [];
       let series2 = [];
+      this.startLoading();
       let res = await this.api.getApi('/getAllData');
       res.subscribe((data: any) => {
         console.log('GetAllData :: ', data);
@@ -159,6 +165,7 @@ export class NewApiComponent implements OnInit {
         // this.sethl2Data(data.data.length, series2);
       });
     } catch (error) {
+      this.api.stopLoading();
       console.error('ERROR IN LOAD ALL DATA ::: ', error);
     }
   }
@@ -228,14 +235,17 @@ export class NewApiComponent implements OnInit {
         });
         this.setStockData(thresold, pattern);
         this.sethl2Data(thresold, hlPattern);
+        this.api.stopLoading();
         await this.askUserForPatternMatch(3, _pdata3);
         await this.askUserForPatternMatch(4, _pdata4);
         await this.askUserForPatternMatch(5, _pdata5);
         
       } else {
+        this.api.stopLoading();
         throw Error(res.msg);
       }
     } catch (error) {
+      this.api.stopLoading();
       this.snackBar.open(error, 'Okay', {
         horizontalPosition: 'right',
         verticalPosition: 'top',
@@ -382,6 +392,15 @@ export class NewApiComponent implements OnInit {
   static convertDate(date: Date) {
     // return new Date(new Date(new Date(date).setHours(new Date(date).getHours() + 5)).setMinutes(new Date(date).getMinutes() + 30)).getTime();
     return new Date(new Date());
+  }
+
+  startLoading() {
+    this.dialog.open(LoadingComponent, {
+      data: { title: 'Loading ... ' },
+      disableClose: true,
+      minWidth: 300,
+      panelClass: 'loading'
+    });
   }
 
 }
