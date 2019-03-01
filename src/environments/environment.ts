@@ -4,10 +4,10 @@
 
 export const environment = {
   production: false,
-  // api_origin: 'http://192.168.1.133:5000',
-  api_origin: 'http://18.237.88.115:5000',
-  // otherLocal: 'http://192.168.1.133:3000'
-  otherLocal: 'http://18.237.88.115:5000'
+  api_origin: 'http://192.168.1.133:5000',
+  otherLocal: 'http://192.168.1.133:3000'
+  // api_origin: 'http://18.237.88.115:5000',
+  // otherLocal: 'http://18.237.88.115:5000'
 };
 
 /*
