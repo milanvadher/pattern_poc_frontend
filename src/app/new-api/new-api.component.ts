@@ -160,8 +160,9 @@ export class NewApiComponent implements OnInit {
           color: '#734dc4',
           id: 'volume'
         });
+        this.api.stopLoading();
         // this.setStockData(data.data.length, series1);
-        this.loadPattern(data.data.length, series2, series1);
+        // this.loadPattern(data.data.length, series2, series1);
         // this.sethl2Data(data.data.length, series2);
       });
     } catch (error) {
@@ -174,7 +175,8 @@ export class NewApiComponent implements OnInit {
     try {
       let hlPattern: any[] = hlseries;
       let pattern: any[] = series;
-      let res: Pattern = await this.api.getApi('/pattern').toPromise() as Pattern;
+      // let res: Pattern = await this.api.getApi('/pattern').toPromise() as Pattern;
+      let res: Pattern = await this.api.getApi('/pattern_test').toPromise() as Pattern;
       console.log('Res form "/pattern" : ', res);
       if (res.status) {
         console.log('Test :: ', res.pattern1);
@@ -212,7 +214,7 @@ export class NewApiComponent implements OnInit {
         //   id: 'pattern-1'
         // });
         // pattern.push({
-        //   name: 'triangle-pattern',
+        //   name: 'triangle-pattern',f
         //   data: _pdata1,
         //   type: 'line',
         //   color: '#1FA47A',
@@ -239,7 +241,7 @@ export class NewApiComponent implements OnInit {
         await this.askUserForPatternMatch(3, _pdata3);
         await this.askUserForPatternMatch(4, _pdata4);
         await this.askUserForPatternMatch(5, _pdata5);
-        
+
       } else {
         this.api.stopLoading();
         throw Error(res.msg);
@@ -324,6 +326,19 @@ export class NewApiComponent implements OnInit {
       // time: {
       //   useUTC: true
       // },
+      // -------------------------------------------
+      scrollbar: {
+        buttonBorderRadius: 10,
+        barBackgroundColor: 'lightgrey',
+        barBorderRadius: 10,
+      },
+      chart: {
+        alignTicks: true
+      },
+      drilldown: {
+        animation: true
+      },
+      // -------------------------------------------
       title: {
         text: 'Dukascopy Historical Compare pattern'
       },
@@ -357,14 +372,14 @@ export class NewApiComponent implements OnInit {
             data: data,
             type: 'line',
             color: '#1FA47A',
-            id: 'pattern-'+index
+            id: 'pattern-' + index
           });
           this.hl2.ref.addSeries({
             name: 'triangle-pattern',
             data: data,
             type: 'line',
             color: '#001529',
-            id: 'pattern-'+index
+            id: 'pattern-' + index
           });
         }
         return result;

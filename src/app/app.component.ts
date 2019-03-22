@@ -18,8 +18,8 @@ export class AppComponent {
   @ViewChild('trigger') customTrigger: TemplateRef<void>;
 
   constructor(public route: Router, public charservice: ChatService, private api: RestapiService) {
-    // this.navigateTo(3, 'upload', 'Upload CSV');
-    this.navigateTo(4, 'test', 'New API');
+    this.navigateTo(3, 'upload', 'Upload CSV');
+    // this.navigateTo(4, 'test', 'New API');
     this.api.subscibetoChangeRoute().subscribe(() => {
       this.navigateTo(2, 'statistics', 'Statistics');
     });

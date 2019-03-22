@@ -1,3 +1,176 @@
 button {
     border-radius: 5px;
 }
+
+#radioBtn .notActive {
+    color: #3276b1;
+    background-color: #fff;
+}
+
+.btn-group-sm>.btn,
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem
+}
+
+.btn-group,
+.btn-group-vertical {
+    position: relative;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    vertical-align: middle
+}
+
+.btn-group-vertical>.btn,
+.btn-group>.btn {
+    position: relative;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto
+}
+
+.btn-group-vertical>.btn:hover,
+.btn-group>.btn:hover {
+    z-index: 1
+}
+
+.btn-group-vertical>.btn.active,
+.btn-group-vertical>.btn:active,
+.btn-group-vertical>.btn:focus,
+.btn-group>.btn.active,
+.btn-group>.btn:active,
+.btn-group>.btn:focus {
+    z-index: 1
+}
+
+.btn-group>.btn-group:not(:first-child),
+.btn-group>.btn:not(:first-child) {
+    margin-left: -1px
+}
+
+.btn-group>.btn-group:not(:last-child)>.btn,
+.btn-group>.btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0
+}
+
+.btn-group>.btn-group:not(:first-child)>.btn,
+.btn-group>.btn:not(:first-child) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0
+}
+
+.btn-group-sm>.btn+.dropdown-toggle-split,
+.btn-sm+.dropdown-toggle-split {
+    padding-right: .375rem;
+    padding-left: .375rem
+}
+
+.btn-group-lg>.btn+.dropdown-toggle-split,
+.btn-lg+.dropdown-toggle-split {
+    padding-right: .75rem;
+    padding-left: .75rem
+}
+
+.btn-group-toggle>.btn,
+.btn-group-toggle>.btn-group>.btn {
+    margin-bottom: 0
+}
+
+.btn-group-toggle>.btn input[type=checkbox],
+.btn-group-toggle>.btn input[type=radio],
+.btn-group-toggle>.btn-group>.btn input[type=checkbox],
+.btn-group-toggle>.btn-group>.btn input[type=radio] {
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+    pointer-events: none
+}
+
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc
+}
+
+.btn-primary.focus,
+.btn-primary:focus {
+    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5)
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff
+}
+
+.btn-primary:not(:disabled):not(.disabled).active,
+.btn-primary:not(:disabled):not(.disabled):active,
+.show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #0062cc;
+    border-color: #005cbf
+}
+
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 0 0 0 .2rem rgba(38, 143, 255, .5)
+}
+
+.btn-group-sm>.btn,
+.btn-sm {
+    padding: .25rem .5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem
+}
+
+.btn-group-sm>.btn+.dropdown-toggle-split,
+.btn-sm+.dropdown-toggle-split {
+    padding-right: .375rem;
+    padding-left: .375rem
+}
+
+input[type='radio'] {
+    display: none;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.radio-group {
+    border: solid 0.5px;
+    border-radius: 3px;
+}
+
+.right-border {
+    border-right: solid 0.5px;
+}

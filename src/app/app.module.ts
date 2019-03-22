@@ -28,6 +28,9 @@ import { TryApiComponent } from './try-api/try-api.component';
 import { TestPatternPopupComponent } from './test-pattern-popup/test-pattern-popup.component';
 import { LoadingComponent } from './loading/loading.component';
 import { NewApiComponent } from './new-api/new-api.component';
+import { UploadDialogComponent } from './upload-dialog/upload-dialog.component';
+import { InputNValueComponent } from './input-nvalue/input-nvalue.component';
+import { DisplayNormalisedComponent } from './display-normalised/display-normalised.component';
 
 registerLocaleData(en);
 
@@ -48,7 +51,10 @@ export function highchartsModules() {
     TryApiComponent,
     TestPatternPopupComponent,
     LoadingComponent,
-    NewApiComponent
+    NewApiComponent,
+    UploadDialogComponent,
+    InputNValueComponent,
+    DisplayNormalisedComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +84,6 @@ export function highchartsModules() {
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, { provide: HIGHCHARTS_MODULES, useFactory: highchartsModules }, ChatService],
   bootstrap: [AppComponent],
-  entryComponents: [FeedbackComponent, TestPatternPopupComponent, LoadingComponent]
+  entryComponents: [FeedbackComponent, TestPatternPopupComponent, LoadingComponent, UploadDialogComponent, InputNValueComponent, DisplayNormalisedComponent]
 })
 export class AppModule { }

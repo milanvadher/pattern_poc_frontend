@@ -6,11 +6,51 @@
   </button>
 </nz-upload>
 
-<button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()" [disabled]="fileList.length == 0"
-  style="margin-top: 16px">
-  Upload and Train
+<button nz-button [nzType]="'primary'" [nzLoading]="uploading" (click)="handleUpload()"
+  [disabled]="fileList.length == 0" style="margin-top: 16px">
+  Upload
 </button>
 
 <br><br><br><br>
 
-<!-- <button mat-raised-button color="primary" (click)="trainData()">Train data</button> -->
+<button mat-raised-button color="primary" (click)="trainData()">Train data</button>
+
+<br>
+<br>
+
+
+<!-- <div class="btn-group row radio-group">
+  <label class="btn btn-primary btn-sm active right-border" [ngClass]="{'btn-primary': test.value == 'option1'}">
+    <input type="radio" [formControl]="test" name="options" value="option1"/>
+    <span class="pointer">Option 1</span>
+  </label>
+  <label class="btn btn-primary btn-sm active right-border"
+    [ngClass]="{'btn-primary': test.value == 'option2'}">
+    <input type="radio" [formControl]="test" name="options" value="option2"/>
+    <span class="pointer">Option 2</span>
+  </label>
+  <label class="btn btn-primary btn-sm active right-border"
+    [ngClass]="{'btn-primary': test.value == 'option3'}">
+    <input type="radio" [formControl]="test" name="options" value="option3"/>
+    <span class="pointer">Option 3</span>
+  </label>
+  <label class="btn btn-primary btn-sm active right-border"
+    [ngClass]="{'btn-primary': test.value == 'option4'}">
+    <input type="radio" [formControl]="test" name="options" value="option4"/>
+    <span class="pointer">Option 4</span>
+  </label>
+  <label class="btn btn-primary btn-sm active right-border"
+    [ngClass]="{'btn-primary': test.value == 'option5'}">
+    <input type="radio" [formControl]="test" name="options" value="option5"/>
+    <span class="pointer">Option 5</span>
+  </label>
+  <label class="btn btn-primary btn-sm active right-border"
+    [ngClass]="{'btn-primary': test.value == 'option6'}">
+    <input type="radio" [formControl]="test" name="options" value="option6"/>
+    <span class="pointer">Option 6</span>
+  </label>
+  <label class="btn btn-primary btn-sm active" [ngClass]="{'btn-primary': test.value == 'option7'}">
+    <input type="radio" [formControl]="test" name="options" value="option7"/>
+    <span class="pointer">Option 7</span>
+  </label>
+</div> -->

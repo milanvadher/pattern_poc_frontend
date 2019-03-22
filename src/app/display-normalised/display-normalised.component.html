@@ -1,0 +1,28 @@
+<h1 mat-dialog-title>{{data?.title}}</h1>
+<p>{{data?.message}}</p>
+<div mat-dialog-content>
+  <div>
+    <table>
+      <tr>
+        <th>Close</th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Open</th>
+        <!-- <th>Volume</th> -->
+      </tr>
+      <tr *ngFor="let item of data.data.data.df_stock_list[0]; let i = index">
+        <td> {{ data.data.data.df_stock_list[0][i] }} </td>
+        <td> {{ data.data.data.df_stock_list[1][i] }} </td>
+        <td> {{ data.data.data.df_stock_list[2][i] }} </td>
+        <td> {{ data.data.data.df_stock_list[3][i] }} </td>
+        <!-- <td> {{ data.data.data.df_stock_list[4][i] }} </td> -->
+      </tr>
+    </table>
+  </div>
+</div>
+<br>
+<div mat-dialog-actions>
+  <button mat-flat-button color='primary' [mat-dialog-close]="true" cdkFocusInitial>
+    <mat-icon>done</mat-icon>&nbsp; Okay
+  </button>
+</div>

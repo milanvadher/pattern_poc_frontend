@@ -19,6 +19,7 @@ export class RestapiService {
   public postApi(url: string, data: FormData) {
     return this.http.post(environment.api_origin + url, data).pipe(map(response => {
       console.log(response);
+      return response;
     }));
   }
 
