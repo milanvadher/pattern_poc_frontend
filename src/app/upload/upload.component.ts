@@ -7,6 +7,7 @@ import { FormControl } from '@angular/forms';
 import { UploadDialogComponent } from '../upload-dialog/upload-dialog.component';
 import { InputNValueComponent } from '../input-nvalue/input-nvalue.component';
 import { DisplayNormalisedComponent } from '../display-normalised/display-normalised.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -27,6 +28,11 @@ export class UploadComponent implements OnInit {
   loading = false;
   data: any;
   selected_value = 'option1';
+  time = new Observable(timeObserver => {
+    setInterval(() => {
+      timeObserver.next(new Date().toString())
+    },1000);
+  });
 
   constructor(private msg: NzMessageService, private api: RestapiService, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
@@ -52,7 +58,7 @@ export class UploadComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: boolean) => {
 
       if (!result) {
-        this.openSenakbar('Uploading as normal data ...');
+        this.openSnackBar('Uploading as normal data ...');
         const formData = new FormData();
         this.fileList.forEach((file: any) => {
           formData.append('fileupload', file);
@@ -63,12 +69,12 @@ export class UploadComponent implements OnInit {
         this.api.postApi('/uploadCSV', formData).subscribe((response: any) => {
           console.log('Response :: ', response);
           this.uploading = false;
-          this.openSenakbar(response.msg);
+          this.openSnackBar(response.msg);
           this.api.stopLoading();
         }, (err) => {
           this.api.stopLoading();
           this.uploading = false;
-          this.openSenakbar('Error to upload file ...');
+          this.openSnackBar('Error to upload file ...');
         });
       } else {
         const dialogRef2 = this.dialog.open(InputNValueComponent, {
@@ -80,7 +86,7 @@ export class UploadComponent implements OnInit {
         dialogRef2.afterClosed().subscribe((result2: any) => {
           console.log('Result2 :: ', result2);
           this.inputNvalue = result2;
-          this.openSenakbar('Uploading and normalizing Pattern ...');
+          this.openSnackBar('Uploading and normalizing Pattern ...');
           const formData = new FormData();
           this.fileList.forEach((file: any) => {
             formData.append('refPattern', file);
@@ -92,12 +98,12 @@ export class UploadComponent implements OnInit {
             console.log('Response :: ', response);
             this.showNormalizedData(response);
             this.uploading = false;
-            this.openSenakbar(response.msg);
+            this.openSnackBar(response.msg);
             this.api.stopLoading();
           }, (err) => {
             this.api.stopLoading();
             this.uploading = false;
-            this.openSenakbar('Error to upload file ...');
+            this.openSnackBar('Error to upload file ...');
           });
         });
       }
@@ -110,7 +116,7 @@ export class UploadComponent implements OnInit {
    * @param msg Messege text
    * @param btn Button text
    */
-  openSenakbar(msg: string, btn?: string) {
+  openSnackBar(msg: string, btn?: string) {
     this.snackBar.open(msg, btn ? btn : '', {
       horizontalPosition: 'right',
       verticalPosition: 'top',

@@ -13,8 +13,19 @@ export class RestapiService {
 
   private subject = new Subject<any>();
   private subject1 = new Subject<any>();
+  public client_ip: string;
 
-  constructor(private http: HttpClient, public dialog: MatDialog) { }
+  constructor(private http: HttpClient, public dialog: MatDialog) {
+    this.getClientIp();
+  }
+
+  private getClientIp() {
+    this.http.get<{ ip: string }>('https://jsonip.com')
+      .subscribe(data => {
+        console.log('IP data :: ', data);
+        this.client_ip = data.ip;
+      });
+  }
 
   public postApi(url: string, data: FormData) {
     return this.http.post(environment.api_origin + url, data).pipe(map(response => {
@@ -34,7 +45,7 @@ export class RestapiService {
   }
 
   public testApi(url: string) {
-    return this.http.get(url,  {
+    return this.http.get(url, {
       headers: {
         "Authorization": "Basic ZXN0ZXBtb2JpbGU6MjA0OGRkampj",
         "Content-Type": "application/json",

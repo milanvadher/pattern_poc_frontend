@@ -1,3 +1,8 @@
+<div>
+  <b>Time:</b> &nbsp;&nbsp;&nbsp;{{ time | async }} <br><br>
+  <b>IP:</b> &nbsp;&nbsp;&nbsp;{{api.client_ip}}
+</div>
+<br><br><br>
 <h2>You can Upload data from here.</h2>
 <nz-upload [(nzFileList)]="fileList" [nzBeforeUpload]="beforeUpload">
   <button nz-button>
