@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { StockChart } from 'angular-highcharts';
-import { MatSnackBar, MatDialog } from '@angular/material';
-import { RestapiService } from '../restapi.service';
-import { FeedbackComponent } from '../feedback/feedback.component';
-import { LoadingComponent } from '../loading/loading.component';
+import {Component, OnInit} from '@angular/core';
+import {StockChart} from 'angular-highcharts';
+import {MatSnackBar, MatDialog} from '@angular/material';
+import {RestapiService} from '../restapi.service';
+import {FeedbackComponent} from '../feedback/feedback.component';
+import {LoadingComponent} from '../loading/loading.component';
 
 @Component({
   selector: 'app-new-api',
@@ -161,13 +161,40 @@ export class NewApiComponent implements OnInit {
           id: 'volume'
         });
         this.api.stopLoading();
-        // this.setStockData(data.data.length, series1);
-        // this.loadPattern(data.data.length, series2, series1);
-        // this.sethl2Data(data.data.length, series2);
+        this.setStockData(data.data.length, series1);
+        this.loadPattern(data.data.length, series2, series1);
+        this.sethl2Data(data.data.length, series2);
+        // this.getAllrefPattern();
       });
     } catch (error) {
       this.api.stopLoading();
       console.error('ERROR IN LOAD ALL DATA ::: ', error);
+    }
+  }
+
+  async getAllrefPattern() {
+    let res: RootObject = await this.api.getApi('/getAllrefPattern').toPromise() as RootObject;
+    console.log("res getAllrefPattern :: ", res);
+    if (res.status) {
+      let _pdata = [];
+      for (let index = 0; index < res.json_data.length; index++) {
+        const el = res.json_data[index];
+        _pdata.push([el["Time (UTC)"], (el.High + el.Low) / 2]);
+      }
+      this.stock.ref.addSeries({
+        name: 'triangle-pattern-ref',
+        data: _pdata,
+        type: 'line',
+        color: '#1FA47A',
+        id: 'pattern-ref'
+      });
+      this.hl2.ref.addSeries({
+        name: 'triangle-pattern-ref',
+        data: _pdata,
+        type: 'line',
+        color: '#001529',
+        id: 'pattern-ref'
+      });
     }
   }
 
@@ -214,7 +241,7 @@ export class NewApiComponent implements OnInit {
         //   id: 'pattern-1'
         // });
         // pattern.push({
-        //   name: 'triangle-pattern',f
+        //   name: 'triangle-pattern',
         //   data: _pdata1,
         //   type: 'line',
         //   color: '#1FA47A',
@@ -235,13 +262,27 @@ export class NewApiComponent implements OnInit {
           color: '#1FA47A',
           id: 'pattern-2'
         });
+        // ------------------- //
+        hlPattern.push({
+          name: 'triangle-pattern',
+          data: _pdata5,
+          type: 'line',
+          color: '#001529',
+          id: 'pattern-3'
+        });
+        pattern.push({
+          name: 'triangle-pattern',
+          data: _pdata5,
+          type: 'line',
+          color: '#1FA47A',
+          id: 'pattern-3'
+        });
         this.setStockData(thresold, pattern);
         this.sethl2Data(thresold, hlPattern);
         this.api.stopLoading();
-        await this.askUserForPatternMatch(3, _pdata3);
-        await this.askUserForPatternMatch(4, _pdata4);
-        await this.askUserForPatternMatch(5, _pdata5);
-
+        // await this.askUserForPatternMatch(3, _pdata3);
+        // await this.askUserForPatternMatch(4, _pdata4);
+        // await this.askUserForPatternMatch(5, _pdata5);
       } else {
         this.api.stopLoading();
         throw Error(res.msg);
@@ -294,6 +335,7 @@ export class NewApiComponent implements OnInit {
       series: series,
     });
   }
+
   sethl2Data(length: number, series: any[]): void {
     console.log('series in chart :: ', series);
     this.hl2 = new StockChart({
@@ -357,7 +399,7 @@ export class NewApiComponent implements OnInit {
   askUserForPatternMatch(index: number, data: any[]) {
     setTimeout(() => {
       const dialogRef = this.dialog.open(FeedbackComponent, {
-        data: { title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.', data: data },
+        data: {title: 'Are you sure ? ', message: 'Do you really want to add this pattern in chart.', data: data},
         disableClose: true,
         minWidth: 400,
         panelClass: 'my-dialog'
@@ -401,8 +443,8 @@ export class NewApiComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param date Date 
+   *
+   * @param date Date
    */
   static convertDate(date: Date) {
     // return new Date(new Date(new Date(date).setHours(new Date(date).getHours() + 5)).setMinutes(new Date(date).getMinutes() + 30)).getTime();
@@ -411,7 +453,7 @@ export class NewApiComponent implements OnInit {
 
   startLoading() {
     this.dialog.open(LoadingComponent, {
-      data: { title: 'Loading ... ' },
+      data: {title: 'Loading ... '},
       disableClose: true,
       minWidth: 300,
       panelClass: 'loading'
@@ -444,4 +486,10 @@ export interface Pattern {
   'pattern3': JsonData[];
   'pattern4': JsonData[];
   'pattern5': JsonData[];
+}
+
+interface RootObject {
+  json_data: JsonData[];
+  msg: string;
+  status: boolean;
 }

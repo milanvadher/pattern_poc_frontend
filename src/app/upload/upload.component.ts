@@ -140,7 +140,7 @@ export class UploadComponent implements OnInit {
     this.startLoading();
     setTimeout(() => {
       this.api.stopLoading();
-    }, 180000);
+    }, 18000);
     // this.api.getApi('/train_model').subscribe((res) => {
     //   console.log('Training data : ', res);
     //   this.api.changeRoute();
